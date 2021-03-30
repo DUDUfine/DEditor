@@ -1,216 +1,290 @@
-# Node.js : ueditor
+# 百度富文本编辑器组件
+ 百度富文本编辑器组件
 
-
-[UEditor](https://github.com/fex-team/ueditor) 官方支持的版本有PHP JSP ASP .NET.
-
-ueditor for nodejs 可以让你的UEditor支持nodejs
-
-## ueditor@1.0.0 已经全面升级 。
-
-##Installation
-
+## 使用
+### VUE 中的使用
 ```
- npm install ueditor --save
+<template>
+  <div class="demo">
+    <script id="editor" type="text/plain" style="width: 1024px; height: 500px"></script>
+    <div id="btns">
+      <div>
+        <button @click="getAllHtml()">获得整个html的内容</button>
+        <button  @click="getContentHtml()">获得内容html</button>
+        <button  @click="getContent()">获得内容</button>
+        <button  @click="setContent()">写入内容</button>
+        <button  @click="setContent(true)">追加内容</button>
+        <button  @click="getContentTxt()">获得纯文本</button>
+        <button  @click="getPlainTxt()">获得带格式的纯文本</button>
+        <button  @click="hasContent()">判断是否有内容</button>
+        <button  @click="setFocus()">使编辑器获得焦点</button>
+        <button @mousedown="isFocus(event)">编辑器是否获得焦点</button>
+        <button @mousedown="setblur(event)">编辑器失去焦点</button>
+      </div>
+      <div>
+        <button @click="getText()">获得当前选中的文本</button>
+        <button @click="insertHtml()">插入给定的内容</button>
+        <button id="enable" @click="setEnabled()">可以编辑</button>
+        <button @click="setDisabled()">不可编辑</button>
+        <button @click=" UE.getEditor('editor').setHide()">隐藏编辑器</button>
+        <button @click=" UE.getEditor('editor').setShow()">显示编辑器</button>
+      </div>
+    </div>
+  </div>
+</template>
 
-```
+<script>
+import '@/assets/index.js';// 在main文件中引入dcUEditor就不需要在这里引入了
 
-
-## Usage
-
-```javascript
-
-
-var bodyParser = require('body-parser')
-var ueditor = require("ueditor")
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
-app.use(bodyParser.json());
-
-// /ueditor 入口地址配置 https://github.com/netpi/ueditor/blob/master/example/public/ueditor/ueditor.config.js
-// 官方例子是这样的 serverUrl: URL + "php/controller.php"
-// 我们要把它改成 serverUrl: URL + 'ue'
-app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'), function(req, res, next) {
-
-  // ueditor 客户发起上传图片请求
-
-  if(req.query.action === 'uploadimage'){
-
-    // 这里你可以获得上传图片的信息
-    var foo = req.ueditor;
-    console.log(foo.filename); // exp.png
-    console.log(foo.encoding); // 7bit
-    console.log(foo.mimetype); // image/png
-
-    // 下面填写你要把图片保存到的路径 （ 以 path.join(__dirname, 'public') 作为根路径）
-    var img_url = 'yourpath';
-    res.ue_up(img_url); //你只要输入要保存的地址 。保存操作交给ueditor来做
-  }
-  //  客户端发起图片列表请求
-  else if (req.query.action === 'listimage'){
-    var dir_url = 'your img_dir'; // 要展示给客户端的文件夹路径
-    res.ue_list(dir_url) // 客户端会列出 dir_url 目录下的所有图片
-  }
-  // 客户端发起其它请求
-  else {
-
-    res.setHeader('Content-Type', 'application/json');
-    // 这里填写 ueditor.config.json 这个文件的路径
-    res.redirect('/ueditor/ueditor.config.json')
-}}));
-
-```
-### 七牛上传
-```javascript
-
-var bodyParser = require('body-parser')
-var ueditor = require("ueditor")
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
-app.use(bodyParser.json());
-
-// 支持七牛上传，如有需要请配置好qn参数，如果没有qn参数则存储在本地
-app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'), {
-    qn: {
-        accessKey: 'your access key',
-        secretKey: 'your secret key',
-        bucket: 'your bucket name',
-        origin: 'http://{bucket}.u.qiniudn.com'
+export default {
+  name: 'Ueditor',
+  data() {
+    return {
+      ueditor: null
     }
-}, function(req, res, next) {
-  // ueditor 客户发起上传图片请求
-  var imgDir = '/img/ueditor/'
-  if(req.query.action === 'uploadimage'){
-    var foo = req.ueditor;
-
-    var imgname = req.ueditor.filename;
-
-    
-    res.ue_up(imgDir); //你只要输入要保存的地址 。保存操作交给ueditor来做
-  }
-  //  客户端发起图片列表请求
-  else if (req.query.action === 'listimage'){
-    
-    res.ue_list(imgDir);  // 客户端会列出 dir_url 目录下的所有图片
-  }
-  // 客户端发起其它请求
-  else {
-
-    res.setHeader('Content-Type', 'application/json');
-    res.redirect('/ueditor/ueditor.config.json')
-}}));
-
-```
-### FDFS上传
-```javascript
-
-var bodyParser = require('body-parser')
-var ueditor = require("ueditor")
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
-app.use(bodyParser.json());
-
-//FDFS config 参数配置
-var ueditorConfig = {
-  fdfs: {
-    /* Require 必须 */
-    upload: {
-      host: '192.168.0.40', //fdfs 上传服务器 host
-      port: '22122'  // 上传服务器端口(一般默认22122)
+  },
+  mounted() {
+    this.ueditor = window.UE.getEditor("editor", {
+      // 七牛上传图片的接口
+      qiniuUploadUrl: 'https://upload.qiniup.com',
+      // 七牛上传token
+      qiniuUpToken: 'MTCYw9bEsM_F3X3N3GPwf-eVl7WpTSNmVbM7vtCh:TmchVKaWAWRoEPzKw-cp8DtzsfM=:eyJzY29wZSI6InZwYW4iLCJkZWFkbGluZSI6MTYxMTc5Nzk3Mn0=',
+      // 七牛图片存储域名
+      qiniuUploadDomain: 'https://vpan.test.file.mediportal.com.cn',
+      // 用户token，七牛图片的存储盘'/vpn/faq/qiniu/fetch'这个接口调用需要使用
+      accessToken: '06f10680847d40bfb4a4db98bf08216b',
+      // 图片转存七牛接口
+      qiniuImgTransferUrl: 'http://test.mediportal.com.cn' + '/faq/qiniu/fetch', 
+      //  上传七牛图片的存储盘
+      qiniuBucket: 'vpan',
+      //七牛图片url后面加上这个参数,解决ios webP图片格式的问题（这个参数保持不变）
+      imgParams: '?imageMogr2/format/png',
+      initialFrameWidth: 1100,
+      initialFrameHeight: 400,
+    });
+  },
+  methods: {
+    // 获得整个富文本html的内容
+    getAllHtml() {
+      console.log(this.ueditor.getAllHtml());
+      console.log(UE.getEditor("editor").getAllHtml());
     },
-    download: {
-      host: '192.168.0.82' //fdfs 下载服务器host
+
+    // 获得富文本内容html
+    getContentHtml(e) {
+      console.log(UE.getEditor("editor").getHtml())
     },
-    /* Require 必须 */
-    /* 可缺省 */
-    defaultExt: 'jpg', //默认后缀为png
-    charset: 'utf8', //默认为utf8
-    timeout: 20 * 1000 //默认超时时间10s
-    /* 可缺省 */
-  }
-};
 
-// 支持FDFS上传，upload跟download字段必填
-app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'),  ueditorConfig, function(req, res, next) {
-  // ueditor 客户发起上传图片请求
-  var imgDir = '/img/ueditor/'
-  if(req.query.action === 'uploadimage'){
-    var foo = req.ueditor;
+    // 获得内容（一般要获取富文本中的内容就使用这个方法）
+    getContent() {
+      var arr = [];
+      arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+      arr.push("内容为：");
+      arr.push(UE.getEditor("editor").getContent());
+      console.log(arr.join("\n"));
+    },
 
-    var imgname = req.ueditor.filename;
+    // 写入内容 isAppendTo=true时表示追加；isAppendTo=false时表示覆盖写入
+    setContent(isAppendTo) {
+      var arr = [];
+      arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+      UE.getEditor("editor").setContent("欢迎使用ueditor", isAppendTo);
+      console.log(arr.join("\n"));
+    },
 
+    // 获得纯文本
+    getContentTxt() {
+      var arr = [];
+      arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+      arr.push("编辑器的纯文本内容为：");
+      arr.push(UE.getEditor("editor").getContentTxt());
+      alert(arr.join("\n"));
+    },
+
+    // 获得带格式的纯文本
+    getPlainTxt() {
+      var arr = [];
+      arr.push(
+          "使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容"
+      );
+      arr.push("内容为：");
+      arr.push(UE.getEditor("editor").getPlainTxt());
+      console.log(arr.join("\n"));
+    },
+
+    // 判断是否有内容
+    hasContent() {
+      var arr = [];
+      arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+      arr.push("判断结果为：");
+      arr.push(UE.getEditor("editor").hasContents());
+      alert(arr.join("\n"));
+    },
+
+    // 使编辑器获得焦点
+    setFocus() {
+      UE.getEditor("editor").focus();
+    },
+
+    // 编辑器是否获得焦点
+    isFocus(e) {
+      alert(UE.getEditor("editor").isFocus());
+      UE.dom.domUtils.preventDefault(e);
+    },
+
+    // 编辑器失去焦点
+    setblur(e) {console.log(e);
+      UE.getEditor("editor").blur();
+      // UE.dom.domUtils.preventDefault(e);
+    },
+
+    // 获得当前选中的文本
+    getText() {
+      //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
+      var range = UE.getEditor("editor").selection.getRange();
+      range.select();
+      var txt = UE.getEditor("editor").selection.getText();
+      alert(txt);
+    },
+
+    // 插入给定的内容
+    insertHtml() {
+      var value = prompt("插入html代码", "");
+      UE.getEditor("editor").execCommand("insertHtml", value);
+    },
     
-    res.ue_up(imgDir); //你只要输入要保存的地址 。保存操作交给ueditor来做
-  }
-  //  客户端发起图片列表请求
-  else if (req.query.action === 'listimage'){
-    
-    res.ue_list(imgDir);  // 客户端会列出 dir_url 目录下的所有图片
-  }
-  // 客户端发起其它请求
-  else {
+    // 可以编辑
+    setEnabled() {
+        UE.getEditor("editor").setEnabled();
+        this.enableBtn();
+    },
 
-    res.setHeader('Content-Type', 'application/json');
-    res.redirect('/ueditor/ueditor.config.json')
-}}));
+    // 不可编辑
+    setDisabled() {
+      UE.getEditor("editor").setDisabled("fullscreen");
+      this.disableBtn("enable");
+    },
 
-```
+    // 隐藏编辑器
+    hide() {
+      UE.getEditor('editor').setHide()
+    },
 
-### 多类型文件上传 （附件 视频 图片）
-```javascript
+    // 显示编辑器
+    show() {
+      UE.getEditor('editor').setShow()
+    },
 
-var bodyParser = require('body-parser')
-var ueditor = require("ueditor")
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
-app.use(bodyParser.json());
+    //创建编辑器
+    createEditor() {
+      this.enableBtn();
+      UE.getEditor("editor");
+    },
 
-app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'), function(req, res, next) {
-  var imgDir = '/img/ueditor/' //默认上传地址为图片
-  var ActionType = req.query.action;
-    if (ActionType === 'uploadimage' || ActionType === 'uploadfile' || ActionType === 'uploadvideo') {
-        var file_url = imgDir;//默认上传地址为图片
-        /*其他上传格式的地址*/
-        if (ActionType === 'uploadfile') {
-            file_url = '/file/ueditor/'; //附件保存地址
-        }
-        if (ActionType === 'uploadvideo') {
-            file_url = '/video/ueditor/'; //视频保存地址
-        }
-        res.ue_up(file_url); //你只要输入要保存的地址 。保存操作交给ueditor来做
-        res.setHeader('Content-Type', 'text/html');
+
+    // 删除编辑器
+    deleteEditor() {
+        this.disableBtn();
+        UE.getEditor("editor").destroy();
+    },
+
+    disableBtn(str) {
+      var div = document.getElementById("btns");
+      var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+      for (var i = 0, btn;
+          (btn = btns[i++]);) {
+          if (btn.id == str) {
+              UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+          } else {
+              btn.setAttribute("disabled", "true");
+          }
+      }
+    },
+
+    enableBtn() {
+      var div = document.getElementById("btns");
+      var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+      for (var i = 0, btn;
+          (btn = btns[i++]);) {
+          UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+      }
     }
-  //客户端发起图片列表请求
-  else if (ActionType === 'listimage'){
-    
-    res.ue_list(imgDir);  // 客户端会列出 dir_url 目录下的所有图片
   }
-  // 客户端发起其它请求
-  else {
-    res.setHeader('Content-Type', 'application/json');
-    res.redirect('/ueditor/ueditor.config.json')
-}}));
-
-```
-
-### 上传配置
-```javascript
-app.use("/ueditor/ue", static_url, config = {}, callback);
-```
-当config为空时，会默认把图片上传到 static_url + '/img/ueditor' 目录下。   
-比如例子“Usage”中图片会上传到项目的 public/img/ueditor 目录。  
-
-当配置了 config.qn 图片则只会上传到七牛服务器而不会上传到项目目录。    
-同时上传到七牛和项目目录，只需配置 config.local 即可
-```javascript
-config = {
-  qn: { ... },
-  local: true 
 }
+</script>
 ```
 
-你可以来[ueditor:nodejs](http://blog.netpi.me/nodejs/ueditor-nodejs)给作者留言
 
+## 百度富文本接口
+```
+注意：接口需要等富文本节点完成初始化渲染后再调用，可以放在ready()事件中执行
+  UE.getEditor('ueditor').ready(() => {
+    console.log('插入代码insertHtml');
+    UE.getEditor('ueditor').execCommand("insertHtml", _data.content.mainBody)
+  })
+
+
+获得整个富文本html的内容
+UE.getEditor("editor").getAllHtml()
+
+获得富文本内容html
+UE.getEditor("editor").getHtml()
+
+获得内容（推荐先）
+UE.getEditor("editor").getContent()  
+
+写入内容
+UE.getEditor("editor").setContent("欢迎使用ueditor", false)
+
+追加内容
+UE.getEditor("editor").setContent("欢迎使用ueditor", true);
+
+获得纯文本
+UE.getEditor("editor").getContentTxt()
+
+获得带格式的纯文本  
+UE.getEditor("editor").getPlainTxt()
+
+
+判断是否有内容
+UE.getEditor("editor").hasContents()
+
+使编辑器获得焦点
+UE.getEditor("editor").focus();
+
+编辑器是否获得焦点 
+UE.getEditor("editor").isFocus()
+
+编辑器失去焦点
+ UE.getEditor("editor").blur();
+
+获得当前选中的文本（当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容）
+ var range = UE.getEditor("editor").selection.getRange();
+            range.select();
+            var txt = UE.getEditor("editor").selection.getText();
+            alert(txt);
+
+插入给定的内容 
+UE.getEditor("editor").execCommand("insertHtml", value);
+
+可以编辑
+UE.getEditor("editor").setEnabled()
+
+不可编辑
+UE.getEditor("editor").setDisabled("fullscreen");
+
+隐藏编辑器
+UE.getEditor('editor').setHide()
+
+显示编辑器
+UE.getEditor('editor').setShow()
+
+创建编辑器
+UE.getEditor("editor");
+
+删除编辑器
+UE.getEditor("editor").destroy();
+```
+
+
+** 本组件使用Node version 14.15.0开发 **
