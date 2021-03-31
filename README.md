@@ -50,13 +50,13 @@ export default {
       // 七牛上传token
       qiniuUpToken: 'MTCYw9bEsM_F3X3N3GPwf-eVl7WpTSNmVbM7vtCh:TmchVKaWAWRoEPzKw-cp8DtzsfM=:eyJzY29wZSI6InZwYW4iLCJkZWFkbGluZSI6MTYxMTc5Nzk3Mn0=',
       // 七牛图片存储域名
-      qiniuUploadDomain: 'https://vpan.test.file.mediportal.com.cn',
+      qiniuUploadDomain: 'https://xxx.com.cn',
       // 用户token，七牛图片的存储盘'/vpn/faq/qiniu/fetch'这个接口调用需要使用
       accessToken: '06f10680847d40bfb4a4db98bf08216b',
       // 图片转存七牛接口
-      qiniuImgTransferUrl: 'http://test.mediportal.com.cn' + '/faq/qiniu/fetch', 
+      qiniuImgTransferUrl: 'http://xxx.com.cn' + '/faq/qiniu/fetch', 
       //  上传七牛图片的存储盘
-      qiniuBucket: 'vpan',
+      qiniuBucket: 'pan1',
       //七牛图片url后面加上这个参数,解决ios webP图片格式的问题（这个参数保持不变）
       imgParams: '?imageMogr2/format/png',
       initialFrameWidth: 1100,
