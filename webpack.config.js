@@ -32,13 +32,8 @@ module.exports = {
       use: 'url-loader'
     }]
   },
-  // build: {
-  //   assetsRoot: path.resolve(__dirname, './dist'),
-  //   assetsSubDirectory: './',
-  //   assetsPublicPath: '/',
-  // },
   entry: {
-    index: '/index.js'
+    index: './src/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -65,7 +60,7 @@ module.exports = {
     openPage: 'ueditor.html',
     index: 'ueditor.html',
     compress: true,
-    port: 9001,
+    port: 9000,
     open: true,
     hot: true,
     inline: true

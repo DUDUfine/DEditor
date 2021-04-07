@@ -1,8 +1,40 @@
 # 百度富文本编辑器组件
  百度富文本编辑器组件
 
-## 使用
-### VUE 中的使用
+## 组件中的富文本默认配置
+```
+// 七牛上传图片的接口
+qiniuUploadUrl: 'https://upload.qiniup.com'
+// 上传七牛图片的存储盘
+qiniuBucket: 'vpan'
+//七牛图片url后面加上这个参数,解决ios webP图片格式的问题
+imgParams: '?imageMogr2/format/png',
+```
+
+## 快速使用
+### VUE项目快速渲染百度富文本使用示例
+```
+<template>
+  <div class="demo">
+    <script id="editor" type="text/plain" style="width: 1024px; height: 500px"></script>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      ueditor: null
+    }
+  },
+  mounted() {
+    this.ueditor = window.UE.getEditor("editor")
+  }
+}
+
+</script>
+```
+
+### VUE 中的完整使用方法示例
 ```
 <template>
   <div class="demo">

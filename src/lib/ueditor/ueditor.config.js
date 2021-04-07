@@ -31,20 +31,20 @@
         // 服务器统一请求接口路径
         // serverUrl: 'http://localhost:9000/',
 
-        // // 七牛上传图片的接口
-        // qiniuUploadUrl: 'https://upload.qiniup.com',
+        // 七牛上传图片的接口
+        qiniuUploadUrl: 'https://upload.qiniup.com',
         // // 七牛上传token
         // qiniuUpToken: 'MTCYw9bEsM_F3X3N3GPwf-eVl7WpTSNmVbM7vtCh:SXeSBkFKJ88qBe8bT0QKQEHnD2M=:eyJzY29wZSI6InZwYW4iLCJkZWFkbGluZSI6MTYxMDY3MDIzMH0=',
-        // // 七牛图片存储域名
-        // qiniuUploadDomain: 'https://vpan.test.file.mediportal.com.cn',
-        // // 用户token，七牛图片的存储盘'/vpn/faq/qiniu/fetch'这个接口调用需要使用
+        // 七牛图片存储域名
+        // qiniuUploadDomain: 'https://xxx.com.cn',
+        // // 用户token，七牛图片的存储盘接口调用需要使用
         // accessToken: 'fd5b11b2d39845dfa6ca9c1264fe563c',
         // // 图片转存七牛接口
-        // qiniuImgTransferUrl: 'http://test.mediportal.com.cn' + '/faq/qiniu/fetch', 
-        // //  // 上传七牛图片的存储盘
-        // qiniuBucket: 'vpan',
-        // //七牛图片url后面加上这个参数,解决ios webP图片格式的问题
-        // imgParams: '?imageMogr2/format/png',
+        // qiniuImgTransferUrl: 'http://xxx.com.cn' + '/faq/qiniu/fetch', 
+        //  // 上传七牛图片的存储盘
+        qiniuBucket: 'xxx',
+        //七牛图片url后面加上这个参数,解决ios webP图片格式的问题
+        imgParams: '?imageMogr2/format/png',
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
 

@@ -1,7 +1,7 @@
 import iframscss from './themes/iframe.css';
 import uploadConfoig from './nodejs/config';
 import $ from "./$.js"
-import removFileToQiniu from './removFileToQiniu.js'
+import removFileToQiniu from './removFileToQiniu.js';
 
 (function() {
     // editor.js
@@ -24,28 +24,6 @@ import removFileToQiniu from './removFileToQiniu.js'
     UE._customizeUI = {};
 
     UE.version = "1.4.3";
-
-    // 七牛上传的domian和token从localstorge获取（登录后页面跳转会请求七牛token放到localStorage）
-    // UE.qiniuToken = { domain, upToken }
-    // UE.qiniuToken = function() {
-
-    //     let qiniuToken = {domain: 'vpan.test.file.mediportal.com.cn', upToken: 'MTCYw9bEsM_F3X3N3GPwf-eVl7WpTSNmVbM7vtCh:LWBNAEGHlC_jrsRugGqXSYOUfas=:eyJzY29wZSI6InZwYW4iLCJkZWFkbGluZSI6MTYxMDU4NTY3OX0='}
-    //     return qiniuToken;
-    // }
-
-    // UE.qiniuUrl = 'https://upload.qiniup.com/';
-
-    // UE.qiniuTransfer = {
-    //     uploadImgUri: 'http://test.mediportal.com.cn' + '/faq/qiniu/fetch', // 图片转存七牛接口
-    //     bucket: 'vpan', // 上传七牛图片的存储盘
-    //     imgParams: '?imageMogr2/format/png' //图片文件后面加上这个参数,解决ios webP图片格式的问题
-    // }
-
-    // 动态调用获取用户token,七牛图片的存储盘, 给'/vpn/faq/qiniu/fetch'这个接口调用使用
-    // UE.getAccessToken = function() {
-    //     var access_token = 'fd5b11b2d39845dfa6ca9c1264fe563c';
-    //     return access_token;
-    // }
 
 
     var dom = (UE.dom = {});
@@ -1754,11 +1732,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 }
                 if ((t = this["on" + ti.toLowerCase()])) {
                     r = t.apply(this, arguments);
-                    console.log(t);
-                    console.log(r);
-                    console.log(this.showPopup);
-                    console.log(this);
-                    console.log('fireEvent：on' + ti.toLowerCase());
                 }
             }
             return r;
@@ -7473,9 +7446,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 UEDITOR_CONFIG,
                 true
             );
-            console.log('UE.getEditor-options-options:');
-            console.log(me.options);
-            console.log(UEDITOR_CONFIG);
             me.shortcutkeys = {};
             me.inputRules = [];
             me.outputRules = [];
@@ -8242,7 +8212,6 @@ import removFileToQiniu from './removFileToQiniu.js'
              * ```
              */
             focus: function(toEnd) {
-                console.log('focus');
                 try {
                     var me = this,
                         rng = me.selection.getRange();
@@ -8958,8 +8927,6 @@ import removFileToQiniu from './removFileToQiniu.js'
     // core/loadconfig.js
     (function() {
         UE.Editor.prototype.loadServerConfig = function() {
-            console.log('UE.Editor.prototype.loadServerConfig');
-            console.log(uploadConfoig);
             var me = this;
             setTimeout(function() {
                 try {
@@ -9026,14 +8993,12 @@ import removFileToQiniu from './removFileToQiniu.js'
         };
 
         UE.Editor.prototype.afterConfigReady = function(handler) {
-            console.log('afterConfigReady');
             if (!handler || !utils.isFunction(handler)) return;
             var me = this;
             var readyHandler = function() {
                 handler.apply(me, arguments);
                 me.removeListener("serverConfigLoaded", readyHandler);
             };
-            console.log(`me.isServerConfigLoaded-${me.isServerConfigLoaded()}`);
             if (me.isServerConfigLoaded()) {
                 handler.call(me, "serverConfigLoaded");
             } else {
@@ -11326,7 +11291,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 }
             }
             getNodeByNodeType(div, 'IMG');
-            console.log('打印节点');
             for (var i = 0; i < Imgs.length; i++) {
                 let img = Imgs[i]
                 let picUrl = img.src
@@ -12962,7 +12926,6 @@ import removFileToQiniu from './removFileToQiniu.js'
         });
         me.commands["paragraph"] = {
             execCommand: function(cmdName, style, attrs, sourceCmdName) {
-                console.log('Paragraphd-execCommand');
                 var range = this.selection.getRange();
                 //闭合时单独处理
                 if (range.collapsed) {
@@ -16546,7 +16509,6 @@ import removFileToQiniu from './removFileToQiniu.js'
             ];
             Scale.prototype = {
                 init: function(editor) {
-                    console.log('Scale-init');
                     var me = this;
                     me.editor = editor;
                     me.startPos = this.prePos = { x: 0, y: 0 };
@@ -17323,7 +17285,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 },
                 /* 初始化简单上传按钮 */
                 simpleuploadbtnready: function(type, container) {
-                    console.log('simpleuploadbtnready');
                     containerBtn = container;
                     me.afterConfigReady(initUploadBtn);
                 },
@@ -17517,7 +17478,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                     document.documentElement;
             },
             getClientRect: function(element) {
-                console.log('uiUtils-getClientRect');
                 var bcr;
                 //trace  IE6下在控制编辑器显隐时可能会报错，catch一下
                 try {
@@ -17542,7 +17502,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 }
                 rect.bottom = rect.top + rect.height;
                 rect.right = rect.left + rect.width;
-                console.log('getClientRect-rect:' + JSON.stringify(rect));
                 return rect;
             },
             getViewportRect: function() {
@@ -17960,7 +17919,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 allPopups.push(this);
             },
             getHtmlTpl: function() {
-                console.log('Popup-edui-popup-content');
                 return (
                     '<div id="##" class="edui-popup %%" onmousedown="return false;">' +
                     ' <div id="##_body" class="edui-popup-body">' +
@@ -18078,11 +18036,8 @@ import removFileToQiniu from './removFileToQiniu.js'
                 this.showAnchorRect(uiUtils.getClientRect(element), hoz);
             },
             showAnchorRect: function(rect, hoz, adj) {
-                console.log(' Popup.prototype-showAnchorRect');
                 this._doAutoRender();
                 var vpRect = uiUtils.getViewportRect();
-                console.log('showAnchorRect');
-                console.log(vpRect);
                 this.getDom().style.visibility = "hidden";
                 this._show();
                 var popSize = this.fitSize();
@@ -18118,7 +18073,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                     left: left,
                     top: top,
                 });
-                console.log('ANCHOR_CLASSES:' + ANCHOR_CLASSES);
                 domUtils.removeClasses(popEl, ANCHOR_CLASSES);
                 popEl.className +=
                     " " + ANCHOR_CLASSES[(sideUp ? 1 : 0) * 2 + (sideLeft ? 1 : 0)];
@@ -18127,7 +18081,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                     baidu.editor.ui.uiUtils.getFixedLayer().style.zIndex =
                         popEl.style.zIndex - 1;
                 }
-                console.log('Popup-edui-popup-content-showAnchorRect');
                 this.getDom().style.visibility = "visible";
             },
             showAt: function(offset) {
@@ -18144,12 +18097,10 @@ import removFileToQiniu from './removFileToQiniu.js'
                 this.showAnchorRect(rect, false, true);
             },
             _show: function(_show) {
-                console.log('Popup-edui-popup-content-_show');
                 if (this._hidden) {
                     var box = this.getDom();
                     box.style.display = "";
                     this._hidden = false;
-                    console.log('Popup-edui-popup-content-_show-fireEvent-show')
                         //                if (box.setActive) {
                         //                    box.setActive();
                         //                }
@@ -18160,7 +18111,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 return this._hidden;
             },
             show: function() {
-                console.log('Popup-edui-popup-content-show');
                 this._doAutoRender();
                 this._show();
             },
@@ -18192,7 +18142,6 @@ import removFileToQiniu from './removFileToQiniu.js'
     ///import core
     ///import uicore
     (function() {
-        console.log('colorpicker');
         var utils = baidu.editor.utils,
             UIBase = baidu.editor.ui.UIBase,
             ColorPicker = (baidu.editor.ui.ColorPicker = function(options) {
@@ -18295,7 +18244,6 @@ import removFileToQiniu from './removFileToQiniu.js'
     ///import core
     ///import uicore
     (function() {
-        console.log('tablepicker');
         var utils = baidu.editor.utils,
             uiUtils = baidu.editor.ui.uiUtils,
             UIBase = baidu.editor.ui.UIBase;
@@ -18401,7 +18349,6 @@ import removFileToQiniu from './removFileToQiniu.js'
         var browser = baidu.editor.browser,
             domUtils = baidu.editor.dom.domUtils,
             uiUtils = baidu.editor.ui.uiUtils;
-        console.log('ui/stateful.js');
         var TPL_STATEFUL =
             'onmousedown="$$.Stateful_onMouseDown(event, this);"' +
             ' onmouseup="$$.Stateful_onMouseUp(event, this);"' +
@@ -18675,8 +18622,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 var rect = uiUtils.getClientRect(this.getDom());
                 rect.top -= this.popup.SHADOW_RADIUS;
                 rect.height += this.popup.SHADOW_RADIUS;
-                console.log('Popup-showPopup');
-                console.log(this.popup);
                 this.popup.showAnchorRect(rect);
             },
             _onArrowClick: function(event, el) {
@@ -19278,7 +19223,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 this.editor.fireEvent("pasteTransfer", param);
             },
             _onClick: function(cur) {
-                console.log('PastePicker_onClick');
                 var node = domUtils.getNextDomNode(cur),
                     screenHt = uiUtils.getViewportRect().height,
                     subPop = uiUtils.getClientRect(node);
@@ -19686,8 +19630,6 @@ import removFileToQiniu from './removFileToQiniu.js'
             showPopup: function() {
 
                 var rect = uiUtils.getClientRect(this.getDom());
-                console.log('Combox.prototype-showPopup');
-                console.log(rect);
                 rect.top += 1;
                 rect.bottom -= 1;
                 rect.height -= 2;
@@ -21292,7 +21234,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 initValue: title,
                 className: "edui-for-paragraph",
                 onselect: function(t, index) {
-                    console.log('Paragraph-onselect');
                     editor.execCommand("Paragraph", this.items[index].value);
                 },
                 onbuttonclick: function() {
@@ -21664,7 +21605,6 @@ import removFileToQiniu from './removFileToQiniu.js'
                 uiReady
             ) {
                 var state = editor.queryCommandState(name);
-                console.log(`editor.queryCommandState-${state}`);
                 if (state == -1) {
                     ui.setDisabled(true);
                     ui.setChecked(false);
