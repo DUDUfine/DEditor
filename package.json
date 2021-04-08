@@ -1,6 +1,6 @@
 {
   "name": "dcUEditor",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "百度富文本编辑器组件",
   "main": "index.js",
   "scripts": {
