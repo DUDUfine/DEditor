@@ -1,10 +1,15 @@
 # 百度富文本编辑器组件
  百度富文本编辑器组件
+ 上传功能内置了七牛上传获取域和token上传，不需要依赖后台服务
 
 ## 组件中的富文本默认配置
 ```
 // 七牛上传图片的接口
 qiniuUploadUrl: 'https://upload.qiniup.com'
+// 七牛获取上传token的地址
+qiniuUploadTokenUrl: 'xxx/getUploadToken'
+//  图片转存七牛接口
+qiniuImgTransferUrl: '/faq/qiniu/fetch', 
 // 上传七牛图片的存储盘
 qiniuBucket: 'vpan'
 //七牛图片url后面加上这个参数,解决ios webP图片格式的问题
@@ -27,7 +32,12 @@ export default {
     }
   },
   mounted() {
-    this.ueditor = window.UE.getEditor("editor")
+    this.ueditor = window.UE.getEditor("editor", {
+     // 用户token，七牛图片的存储盘'/vpn/faq/qiniu/fetch'这个接口调用需要使用
+      accessToken: 'e772bbe22352459d8db823c54c70c935',
+      // 使用环境域名
+      useOrigin: 'https://test.xxx.com.cn',
+    })
   }
 }
 
@@ -78,15 +88,13 @@ export default {
   mounted() {
     this.ueditor = window.UE.getEditor("editor", {
       // 七牛上传图片的接口
-      qiniuUploadUrl: 'https://upload.qiniup.com',
-      // 七牛上传token
-      qiniuUpToken: 'MTCYw9bEsM_F3X3N3GPwf-eVl7WpTSNmVbM7vtCh:TmchVKaWAWRoEPzKw-cp8DtzsfM=:eyJzY29wZSI6InZwYW4iLCJkZWFkbGluZSI6MTYxMTc5Nzk3Mn0=',
-      // 七牛图片存储域名
-      qiniuUploadDomain: 'https://xxx.com.cn',
+      qiniuUploadUrl: 'https://upload.qiniup.com', 
+      // 使用环境域名
+      useOrigin: 'https://test.xxx.com.cn',
       // 用户token，七牛图片的存储盘'/vpn/faq/qiniu/fetch'这个接口调用需要使用
-      accessToken: '06f10680847d40bfb4a4db98bf08216b',
+      accessToken: '06f10680847d40bfb4a4db98bf08222b',
       // 图片转存七牛接口
-      qiniuImgTransferUrl: 'http://xxx.com.cn' + '/faq/qiniu/fetch', 
+      qiniuImgTransferUrl: '/faq/qiniu/fetch', 
       //  上传七牛图片的存储盘
       qiniuBucket: 'pan1',
       //七牛图片url后面加上这个参数,解决ios webP图片格式的问题（这个参数保持不变）
